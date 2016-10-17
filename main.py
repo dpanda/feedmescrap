@@ -14,7 +14,7 @@ def make_external(url):
     return urljoin(request.url_root, url)
 
 
-@app.route("/refresh/<scraper_name>")
+@app.route("/<scraper_name>/refresh")
 def refresh(scraper_name):
     items = feedmescrap.scrape(scraper_name)
     if not items:
@@ -27,13 +27,13 @@ def refresh(scraper_name):
     return "{} article scraped, {} inserted".format(len(items), inserted)
 
 
-@app.route("/drop")
+@app.route("/all/drop")
 def drop():
     persistence.drop()
     return "db data dropped"
 
 
-@app.route("/feed/<scraper_name>.atom")
+@app.route("/<scraper_name>/feed.atom")
 def feed(scraper_name):
     feed = AtomFeed('Recents',feed_url=request.url, url=request.url_root)
     items = sorted( persistence.findRecent(scraper_name), key= lambda k : k.updated, reverse=True)
