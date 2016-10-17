@@ -110,3 +110,6 @@ feedentries.json
 
 # other stuff
 TODO
+
+#ZAPPA
+.*-dev-.*zip
