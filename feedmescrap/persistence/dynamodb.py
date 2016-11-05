@@ -55,7 +55,7 @@ def exists(url, scraper_name):
 def insert_all(article_list):
     inserted=0
     table = gettable()
-    with table.batch_writer(overwrite_by_pkeys=['uurl', 'updated']) as batch:
+    with table.batch_writer(overwrite_by_pkeys=['uurl']) as batch:
         for article in article_list:
             item = article_to_dict(article)
             batch.put_item(Item=item)
@@ -108,7 +108,7 @@ def init():
                     'KeyType': 'HASH' 
                 },
                 {
-                    'AttributeName': 'updated',
+                    'AttributeName': 'scraper',
                     'KeyType': 'RANGE' 
                 }           
             ],
