@@ -24,7 +24,7 @@ def make_external(url):
 def refresh(scraper_name):
     items = feedmescrap.scrape(scraper_name)
     if not items:
-        return "invalid scraper name"
+        return "no articles found"
     inserted = persistence_impl.insert_all(items)
     return "{} article scraped, {} inserted".format(len(items), inserted)
 
@@ -40,9 +40,9 @@ def drop():
 
 @app.route("/<scraper_name>/feed.atom")
 def feed_atom(scraper_name):
-    feed = AtomFeed('Recents',feed_url=request.url, url=request.url_root)
     articles =persistence_impl.findRecent(scraper_name)
     if articles:
+        feed = AtomFeed(articles[0].author,feed_url=request.url, url=request.url_root)
         items = sorted( articles, key= lambda k : k.updated, reverse=True)
         if not items is None:
             for item in items:
@@ -54,7 +54,7 @@ def feed_atom(scraper_name):
                     url=make_external(item.url),
                     updated= item.updated
                 )
-    return feed.get_response()
+        return feed.get_response()
 
 @app.route("/<scraper_name>/feed")
 def feed(scraper_name):

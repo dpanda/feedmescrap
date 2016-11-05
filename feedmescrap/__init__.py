@@ -3,8 +3,10 @@ import pkgutil
 import sys
 
 def get_all_scrapers():
-    return [name for _, name, _ in pkgutil.iter_modules(['scrapers'])]
-
+    scrapers = [name for _, name, _ in pkgutil.iter_modules(['scrapers'])]
+    if len(scrapers)==0:
+        scrapers = [name for _, name, _ in pkgutil.iter_modules(['feedmescrap/scrapers'])]
+    return scrapers
 
 def scrape(scraper_name):
    

@@ -3,13 +3,13 @@ import sys
 
 
 def get_persistence(name):
-   
+
     try:
         persistence = importlib.import_module("feedmescrap.persistence."+name)
-        print("Using '{}' as persistence backend".format(name))
+        print "Using '{}' as persistence backend".format(name)
         persistence.init()
 
-        return persistence 
+        return persistence
     except ImportError:
         print "ImportError while loading persistence '{}'".format(name)
         raise

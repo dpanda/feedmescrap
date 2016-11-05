@@ -1,6 +1,5 @@
 from datetime import datetime, timedelta
-#from .. import Article
-from tinydb import TinyDB, Query, Storage
+from tinydb import TinyDB, Query
 from tinydb_serialization import Serializer, SerializationMiddleware
 
 # implementation of feedscraper persistence layer with tinydb
@@ -21,17 +20,17 @@ db = TinyDB("./feedentries.json", storage=serialization)
 
 def exists(url, scraper_name):
     entry = Query()
-    return db.count(entry.url == url ) >= 1
+    return db.count(entry.url == url) >= 1
 
 def insert(article):
     db.insert(article.__dict__)
 
 def insert_all(article_list):
-    inserted =0
+    inserted = 0
     for article in article_list:
         if not exists(article.url, article.scraper_name):
             insert(article)
-            inserted+=1
+            inserted += 1
     return inserted
 
 def drop():
@@ -43,14 +42,14 @@ def findRecent(scraperName, maxAgeInDays=7):
     delta = timedelta(days=maxAgeInDays)
     now = datetime.now()
 
-    test_if_recent = lambda u: ( u > now - delta)
+    test_if_recent = lambda u: (u > now - delta)
     items_dict = db.search(
         (entry.updated.test(test_if_recent))
         &
         (entry.scraper == scraperName)
     )
-    convert_to_class = lambda d : type("Article",(object,),d) 
+    convert_to_class = lambda d: type("Article", (object, ), d)
     return [convert_to_class(d) for d in items_dict]
 
 def init():
-    pass    
+    pass

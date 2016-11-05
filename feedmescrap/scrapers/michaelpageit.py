@@ -4,7 +4,7 @@ from feedmescrap import Article
 import urllib
 
 def scrape_page(page):
-    print("Scraping MichaelPage, "+str(page))
+    print("Scraping MichaelPage, page {}".format(page))
     items = []
 
     r = urllib.urlopen('http://www.michaelpage.it/browse/jobs/information-technology/all/all?page='+str(page)).read()
@@ -47,7 +47,7 @@ def scrape_page(page):
 def scrape():
     items =[]
     page = 0
-    max_page = 20
+    max_page = 6
     while True:
         page_items = scrape_page(page)
         if len(page_items)==0:
