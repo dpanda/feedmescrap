@@ -1,5 +1,10 @@
 import importlib
+import pkgutil
 import sys
+
+def get_all_scrapers():
+    return [name for _, name, _ in pkgutil.iter_modules(['scrapers'])]
+
 
 def scrape(scraper_name):
    

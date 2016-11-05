@@ -19,12 +19,20 @@ serialization.register_serializer(DateTimeSerializer(), 'TinyDate')
 
 db = TinyDB("./feedentries.json", storage=serialization)
 
-def exists(url):
+def exists(url, scraper_name):
     entry = Query()
     return db.count(entry.url == url ) >= 1
 
 def insert(article):
     db.insert(article.__dict__)
+
+def insert_all(article_list):
+    inserted =0
+    for article in article_list:
+        if not exists(article.url, article.scraper_name):
+            insert(article)
+            inserted+=1
+    return inserted
 
 def drop():
     db.purge()
@@ -44,4 +52,5 @@ def findRecent(scraperName, maxAgeInDays=7):
     convert_to_class = lambda d : type("Article",(object,),d) 
     return [convert_to_class(d) for d in items_dict]
 
-    
+def init():
+    pass    
