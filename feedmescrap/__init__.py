@@ -32,3 +32,6 @@ class Article():
         self.updated=updated
         self.author=author
         self.scraper=scraper
+
+    def __str__(self):
+        return str(self.__dict__)
